@@ -18,14 +18,16 @@ namespace StudentManagementApp
         public Form1()
         {
             InitializeComponent();
+            RefreshData();
         }
         public void RefreshData()
         {
-            string query = "SELECT * FROM Students";
+            string query = "SELECT * FROM Table_Students";
             SqlCommand sqlCommand = new SqlCommand(query, connection);
             SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
         }
     }
 }
