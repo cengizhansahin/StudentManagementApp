@@ -29,5 +29,28 @@ namespace StudentManagementApp
             adapter.Fill(dt);
             dataGridView1.DataSource = dt;
         }
+
+        private void btnKaydet_Click(object sender, EventArgs e)
+        {
+            SqlCommand sqlCommand = new SqlCommand("INSERT INTO Table_Students (FirstName,LastName,BirthDate,Gender) VALUES (@FirstName,@LastName,@BirthDate,@Gender)", connection);
+            sqlCommand.Parameters.AddWithValue("@FirstName", text_Ad.Text);
+            sqlCommand.Parameters.AddWithValue("@LastName", text_Soyad.Text);
+            sqlCommand.Parameters.AddWithValue("@BirthDate", dateTimePicker1.Value);
+            sqlCommand.Parameters.AddWithValue("@Gender", cmbGender.SelectedItem.ToString());
+            
+            try
+            {
+                connection.Open();
+                sqlCommand.ExecuteNonQuery();
+                connection.Close();
+                RefreshData();
+                MessageBox.Show("Öğrenci ekleme işlemi başarılı.");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Bir hata oluştu!",ex.ToString());
+            }
+        }
     }
 }
