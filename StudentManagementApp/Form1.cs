@@ -13,7 +13,7 @@ namespace StudentManagementApp
 {
     public partial class Form1 : Form
     {
-        public static string connectionString = "Server=DESKTOP-S5SNUUO;Database=DB_STUDENT;Trusted_Connection=True;";
+        public static string connectionString = "Server=DESKTOP-3CB3GKQ\\SQLEXPRESS;Database=DB_WİNFORMS;Trusted_Connection=True;";
         SqlConnection connection = new SqlConnection(connectionString);
         public Form1()
         {
@@ -48,7 +48,7 @@ namespace StudentManagementApp
                 sqlCommand.ExecuteNonQuery();
                 connection.Close();
                 RefreshData();
-                MessageBox.Show("Öğrenci ekleme işlemi başarılı.");
+                MessageBox.Show("Kullanıcı ekleme işlemi başarılı.");
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace StudentManagementApp
         {
             if (dataGridView1.CurrentRow != null)
             {
-                SqlCommand cmd = new SqlCommand("UPDATE Students SET FirstName = @FirstName, LastName = @LastName , BirthDate = @BirthDate , Gender = @Gender WHERE StudentID = @StudentID", connection);
+                SqlCommand cmd = new SqlCommand("UPDATE Table_Students SET FirstName = @FirstName, LastName = @LastName , BirthDate = @BirthDate , Gender = @Gender WHERE StudentID = @StudentID", connection);
                 cmd.Parameters.AddWithValue("@StudentID", Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value));
                 cmd.Parameters.AddWithValue("@FirstName", text_Ad.Text);
                 cmd.Parameters.AddWithValue("@LastName", text_Soyad.Text);
@@ -98,7 +98,24 @@ namespace StudentManagementApp
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-
+            if (dataGridView1.CurrentRow != null)
+            {
+                string query = "DELETE FROM Table_Students WHERE StudentID=@StudentID";
+                SqlCommand sqlCommand = new SqlCommand(query, connection);
+                sqlCommand.Parameters.AddWithValue("@StudentID", Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value));
+                try
+                {
+                    connection.Open();
+                    sqlCommand.ExecuteNonQuery();
+                    connection.Close();
+                    RefreshData();
+                    MessageBox.Show("Kullanıcı başarılı bir şekilde silindi.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Bir hata oluştu!", ex.ToString());
+                }
+            }
         }
     }
 }
